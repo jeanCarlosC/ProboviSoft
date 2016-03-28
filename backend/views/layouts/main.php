@@ -42,15 +42,20 @@ AppAsset::register($this);
         [
             'label' => '<i class="glyphicon glyphicon-list-alt"></i> Información',
             'items' => [
-                ['label' => 'Tablas Informativas', 'url' =>Yii::$app->homeUrl],  
-                                
-        ],
-        'visible' => $this->context->route == 'site/index',
+            [
+            'label' => 'Tablas Informativas', 'url' =>Yii::$app->homeUrl],  
+            ],
+            'visible' => $this->context->route == 'site/index',
         ],
 
-        ['label' => '<i class="glyphicon glyphicon-home"></i> Inicio', 
-        'url' => Yii::$app->homeUrl,
-        'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
+        [
+            'label' => 'Producción',
+            'items' => [
+            ['label' => 'Producción-Lactancias', 'url' => Url::toRoute('/produccion/')],
+
+            ],
+
+            'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
         ],
         [
             'label' => 'Modulos Registro',
@@ -66,27 +71,23 @@ AppAsset::register($this);
         [
             'label' => 'Eventos',
             'items' => [
-                ['label' => 'Servicios', 'url' =>Url::toRoute('/servicio/')],
-                ['label' => 'Diagnosticos', 'url' => Url::toRoute('/diagnostico/')],
-                ['label' => 'Partos', 'url' => Url::toRoute('/parto/')],
-                ['label' => 'Abortos', 'url' => Url::toRoute('/aborto/')],
-                ['label' => 'Pesajes de leche', 'url' => Url::toRoute('/ordeno/')],
-                ['label' => 'Secados', 'url' => Url::toRoute('/secado/')],
-                ['label' => 'Pesos Corporales', 'url' => Url::toRoute('/peso/')],        
-                                
-        ],
-        
-        'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
+            ['label' => 'Servicios', 'url' =>Url::toRoute('/servicio/')],
+            ['label' => 'Diagnosticos', 'url' => Url::toRoute('/diagnostico/')],
+            ['label' => 'Partos', 'url' => Url::toRoute('/parto/')],
+            ['label' => 'Abortos', 'url' => Url::toRoute('/aborto/')],
+            ['label' => 'Pesajes de leche', 'url' => Url::toRoute('/ordeno/')],
+            ['label' => 'Secados', 'url' => Url::toRoute('/secado/')],
+            ['label' => 'Pesos Corporales', 'url' => Url::toRoute('/peso/')],        
+
+            ],
+
+            'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
         ],
 
         [
-            'label' => 'Producción',
-            'items' => [
-                ['label' => 'Producción-Lactancias', 'url' => Url::toRoute('/produccion/')],
-
-        ],
-
-        'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
+            'label' => '<i class="glyphicon glyphicon-home"></i> Inicio', 
+            'url' => Yii::$app->homeUrl,
+            'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
         ],
     ];
     
@@ -106,7 +107,8 @@ AppAsset::register($this);
         ];
 
     } else {
-        $menuItems[] = [
+        $menuItems[] = 
+        [
             'label' => 'Cerrar Sesion(' . Yii::$app->user->identity->username . ')',
             'url' => ['/site/logout'],
             'linkOptions' => ['data-method' => 'post']

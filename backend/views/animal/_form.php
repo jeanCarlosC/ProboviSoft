@@ -163,10 +163,6 @@ $(document).ready(function(){
     $("#animal-identificacion").change( function(){
     var num = $("#animal-identificacion").val();
     var n = num.toString();
-    n.split("");
-    var arete = n[2];
-    var total = arete.concat(n[3],n[4],n[5]);
-    document.getElementById("animal-nuemro_arete").value = total;
     document.getElementById("animal-nombre").value = n;
 });
 

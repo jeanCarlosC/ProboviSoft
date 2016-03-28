@@ -2,15 +2,26 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
-
+use yii\helpers\Url;
+use yii\widgets\ActiveForm; 
+use yii\bootstrap\Modal;
+use yii\grid\GridView;
+use yii\bootstrap\Button;
 ?>
-<?php Pjax::begin(); ?>
+
 <?php if(!empty($model_repro)){ ?>
 <div class="col-md-6">
         <br>
         <?php echo DetailView::widget([
         'model' => $model_repro,
         'attributes' => [
+
+            [
+
+            'attribute' => 'estado_reproductivo',
+            'value' => $model_repro->estados,
+
+            ],
 
             [
 
@@ -26,6 +37,7 @@ use yii\widgets\Pjax;
             'value' => $model_repro->hembraas,
 
             ],
+
             [
 
             'attribute' => 'machos',
@@ -35,8 +47,8 @@ use yii\widgets\Pjax;
 
             [
 
-            'attribute' => 'estado_reproductivo',
-            'value' => $model_repro->estados,
+            'attribute' => 'lactancias',
+            'value' => $model_repro->lactanciaas,
 
             ],
 
@@ -48,8 +60,15 @@ use yii\widgets\Pjax;
         ?>
         </div>
 
+        <div class="col-md-6">
+        <br>
 
-        <?php 
+        <a href="<?= Url::toRoute(['/'."produccion".'/'."view",'id'=>$model_repro->animal_identificacion])?>" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="produccion por lactancias" >Ver producción</a>
+
+
+        </div>
+
+         <?php  
     	} 
      	else 
      	{ 
@@ -107,4 +126,15 @@ use yii\widgets\Pjax;
         ?>
         </div>
         <?php endif; ?>
-        <?php Pjax::end(); ?>
+
+        <?php
+
+$js = <<<JS
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+JS;
+ 
+$this->registerJs($js);
+?>

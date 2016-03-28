@@ -19,7 +19,7 @@ class DiagnosticoSearch extends Diagnostico
     public function rules()
     {
         return [
-            [['id_diagnostico', 'dias_gestacion', 'servicio_id_servicio', 'animal_identificacion','animal_identificacion_2'], 'integer'],
+            [['id_diagnostico', 'dias_gestacion', 'servicio_id_servicio', 'animal_identificacion'], 'integer'],
             [['fecha', 'diagnostico_prenez', 'ovario_izq', 'ovario_der', 'utero', 'observacion','parto_esperado'], 'safe'],
         ];
     }
@@ -48,7 +48,7 @@ class DiagnosticoSearch extends Diagnostico
         ->all();*/
 
         $query = Diagnostico::find();
-        $query->select(["LPAD(animal_identificacion, 6, '0') as animal_identificacion_2","diagnostico_prenez","dias_gestacion","fecha","parto_esperado","id_diagnostico"])
+        $query->select(["animal_identificacion","diagnostico_prenez","dias_gestacion","fecha","parto_esperado","id_diagnostico"])
         ->all();
 
         $dataProvider = new ActiveDataProvider([
@@ -71,10 +71,11 @@ class DiagnosticoSearch extends Diagnostico
             'fecha' => $this->fecha,
             'dias_gestacion' => $this->dias_gestacion,
             'servicio_id_servicio' => $this->servicio_id_servicio,
-            'animal_identificacion_2' => $this->animal_identificacion,
+            
         ]);
 
         $query->andFilterWhere(['like', 'diagnostico_prenez', $this->diagnostico_prenez])
+            ->andFilterWhere(['like', 'animal_identificacion', $this->animal_identificacion])
             ->andFilterWhere(['like', 'ovario_izq', $this->ovario_izq])
             ->andFilterWhere(['like', 'ovario_der', $this->ovario_der])
             ->andFilterWhere(['like', 'utero', $this->utero])

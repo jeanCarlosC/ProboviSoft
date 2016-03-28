@@ -110,16 +110,12 @@ echo Tabs::widget([
             'model_repro' => $model_repro,
             ]),
         ],
-        [
-            'label' => 'Datos productivos',
-            'content' => $this->render('produccion', [
-            'model_produ' => $model_produ,
-            ]),
-        ],
 
         [
-            'label' => 'Datos servicios',
-            'content' => 'enlace',
+            'label' => 'Pedigree',
+            'content' => $this->render('pedigree', [
+            'pedi'=>$pedi,
+            ]),
         ],
 
     ],
@@ -146,6 +142,13 @@ echo Tabs::widget([
             'label' => 'Datos reproductivos',
             'content' => $this->render('reproduccion', [
             'model' => $model,
+            ]),
+        ],
+
+        [
+            'label' => 'Pedigree',
+            'content' => $this->render('pedigree', [
+            'pedi'=>$pedi,
             ]),
         ],
 

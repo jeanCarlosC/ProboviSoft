@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
 use yii\data\ArrayDataProvider;
 use backend\models\Model;
 use yii\widgets\ActiveForm;
+use backend\models\AnimalSearch2;
 
 /**
  * DiagnosticoController implements the CRUD actions for Diagnostico model.
@@ -184,14 +185,18 @@ class DiagnosticoController extends Controller
     public function actionIndex()
     {
         $model = new Diagnostico();
+/*        $searchModel2 = new AnimalSearch2();
+        $dataProvider2= $searchModel2->search(Yii::$app->request->queryParams);*/
+
         $searchModel = new DiagnosticoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider= $searchModel->search(Yii::$app->request->queryParams);
+        
 
         $animales = Animal::find()->select(["identificacion"])
         ->where(["sexo"=>"H"])
         ->orderBy(["fecha_nacimiento"=>SORT_DESC])
         ->all();
-        /*$animales_e[] = array();*/
+        
 
 
         foreach ($animales as $key => $value) {
@@ -213,21 +218,23 @@ class DiagnosticoController extends Controller
 
             }
     
-        }/*fin cilco*/
+        }
 
 
             $dataProviderAnimales = new ArrayDataProvider([
             'key'=>'identificacion',
             'allModels' => $animales_e,
             'pagination' => [
-            'pageSize' => 10,
+            'pageSize' => 5,
             ],
             ]);
 
         return $this->render('index', [
+/*            'searchModel2' => $searchModel2,
+            'dataProvider2' => $dataProvider2,*/
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'animales'=>$dataProviderAnimales,
+            'dataProvider2'=>$dataProviderAnimales,
             'model'=>$model,
         ]);
     }

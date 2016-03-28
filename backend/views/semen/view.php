@@ -86,9 +86,9 @@ $this->title = 'Toro: '.$model->identificacion;
     </div>
 
 
-<br><br>
+<br>
 <div class="col-md-4">
-
+<h4 align="center">Datos Basicos</h4>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -101,6 +101,7 @@ $this->title = 'Toro: '.$model->identificacion;
     ]) ?>
     </div>
     <div class="col-md-4">
+    <h4 align="center">Datos Reproductivos</h4>
         <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

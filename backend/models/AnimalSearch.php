@@ -85,7 +85,7 @@ class AnimalSearch extends Animal
         ]);
 
         $query->andFilterWhere(['like', 'sexo', $this->sexo])
-        ->andFilterWhere(['like','identificacion', $this->identificacion_otro])
+        ->andFilterWhere(['like','identificacion', $this->identificacion])
         ->andFilterWhere(['like','sexo', $this->sexo])
         ->andFilterWhere(['like','nuemro_arete', $this->arete]);
 

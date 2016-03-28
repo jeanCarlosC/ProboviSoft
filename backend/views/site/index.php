@@ -44,8 +44,8 @@ $this->title = 'ProboviSoft';
         <div class="row">
             <br> 
             <?php
-            $arr1 = array("aborto","ordeno","secado","produccion");
-            $arr2 = array("animal" => "Animales", "peso"=>"Pesos Corporales","semen"=>"Semen","servicio" => "Servicios", "diagnostico" => "Diagnosticos", "parto" => "Partos","aborto" => "Abortos","ordeno" => "Pesajes de leche","secado" => "Secados","produccion" => "Producción");
+            $arr1 = array("aborto","ordeno","secado","produccion","status-eliminacion");
+            $arr2 = array("animal" => "Animales", "peso"=>"Pesos Corporales","semen"=>"Semen","servicio" => "Servicios", "diagnostico" => "Diagnosticos", "parto" => "Partos","aborto" => "Abortos","ordeno" => "Pesajes de leche","secado" => "Secados","produccion" => "Producción","status-eliminacion"=>'Eliminar Animales');
                 foreach ($arr1 as $key => &$val):   
                 
                 ?>

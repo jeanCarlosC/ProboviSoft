@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                     else if ($action === 'update') {
                     // return \Yii::$app->getUrlManager()->createUrl(['nomina/update', 'id' => $model['idnomina']]);
-                    return Url::toRoute(['animal/update', 'id' => $model['identificacion_otro']]);
+                    return Url::toRoute(['animal/update', 'id' => $model['identificacion']]);
                     } else if ($action === 'delete') {
                     return \Yii::$app->getUrlManager()->createUrl(['animal/delete', 'id' => $model['identificacion']]);
                     }

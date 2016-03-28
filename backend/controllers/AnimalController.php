@@ -20,6 +20,7 @@ use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use backend\models\Parto;
 use backend\models\Ordeno;
+use backend\models\Semen;
 use backend\models\Raza;
 use yii\filters\AccessControl;
 
@@ -126,7 +127,7 @@ class AnimalController extends Controller
      */
     public function actionView($id)
     {
-
+        
        $model = Animal::find()
         ->select(["LPAD(identificacion, 6, '0') as identificacion_otro","imagen","sexo","GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza"," CONCAT(TIMESTAMPDIFF(MONTH,animal.fecha_nacimiento,CURDATE()), ' ','meses') as edad","nuemro_arete","LPAD(madre, 6, '0') as madre_1","LPAD(padre, 6, '0') as padre_1","fecha_nacimiento","identificacion"])
         ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
@@ -143,8 +144,168 @@ class AnimalController extends Controller
         ->where(['ordeno.animal_identificacion'=>$id])
         ->join('JOIN','parto','parto.id_parto=ordeno.parto_id_parto')
         ->orderBy(['id_ordeno'=>SORT_DESC])
-
         ->one();
+
+        $animales = Animal::find()
+        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo","madre","padre"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->groupBy('animal.identificacion')
+        ->all();
+
+        $semen = Semen::find()
+        ->select(["identificacion","GROUP_CONCAT(raza_semen.raza_id_raza, CONCAT(raza_semen.porcentaje, ' ', '%') SEPARATOR ' y ') as raza"])
+        ->from('semen')
+        ->join('JOIN','raza_semen','raza_semen.semen_identificacion = semen.identificacion')
+        ->groupBy('identificacion')
+        ->all();
+
+        /*$pedi[];*/
+        $nada = 0;
+
+        foreach ($animales as $i => $value) 
+        {
+            if($value['identificacion']==$id)
+            {
+                $pedi['hijo']= array('identificacion'=>$id,'raza'=>$value['raza']);
+
+        /**************************************MADRE*****************************************/
+            foreach ($animales as $i => $value2) 
+            {
+
+                if($value2['identificacion']==$value['madre'])
+                {
+                    $pedi['madre']=array('identificacion'=>$value['madre'],'raza'=>$value2['raza']);
+        /**************************************ABUELOS MATERNOS*****************************************/
+                    foreach ($animales as $key => $value3) 
+                    {
+                        if($value3['identificacion']==$value2['madre'])
+                        {
+                            $pedi['abuela_madre'] = array('identificacion'=>$value2['madre'],'raza'=>$value3['raza']);
+                        }
+
+                        if($value3['identificacion']==$value2['padre'])
+                        {
+                            $pedi['abuelo_madre'] = array('identificacion'=>$value2['padre'],'raza'=>$value3['raza']);
+                        }
+                    }
+                }
+
+        /**************************************PADRE*****************************************/        
+                if($value2['identificacion']==$value['padre'])
+                {
+                    $pedi['padre']=array('identificacion'=>$value['padre'],'raza'=>$value2['raza']);
+
+        /**************************************ABUELOS PATERNOS*****************************************/
+                    foreach ($animales as $key => $value4) 
+                    {
+                        if($value4['identificacion']==$value2['madre'])
+                        {
+                            $pedi['abuela_padre'] = array('identificacion'=>$value2['madre'],'raza'=>$value4['raza']);
+                        }
+
+                        if($value4['identificacion']==$value2['padre'])
+                        {
+                            $pedi['abuelo_padre'] = array('identificacion'=>$value2['padre'],'raza'=>$value4['raza']);
+                        }
+                    }
+                }
+                else
+                {
+                    $pedi['padre']=array('identificacion'=>'N/A','raza'=>'N/A');
+                    $nada=1;
+                }
+            }
+
+          
+            foreach ($semen as $key => $value5) {
+                
+                /**************************************PADRE*****************************************/        
+                if($value5['identificacion']==$value['padre'])
+                {
+                    $pedi['padre']=array('identificacion'=>$value['padre'],'raza'=>$value5['raza']);
+
+        /**************************************ABUELOS PATERNOS*****************************************/
+                    foreach ($semen as $key => $value6) 
+                    {
+                        if($value6['identificacion']==$value5['madre'])
+                        {
+                            $pedi['abuela_padre'] = array('identificacion'=>$value5['madre'],'raza'=>$value6['raza']);
+                        }
+
+                        if($value6['identificacion']==$value5['padre'])
+                        {
+                            $pedi['abuelo_padre'] = array('identificacion'=>$value5['padre'],'raza'=>$value6['raza']);
+                        }
+                    }
+
+
+                }
+                
+            }
+
+
+
+            if(empty($pedi['madre']))
+            {
+                $pedi['madre']=array('identificacion'=>'N/A','raza'=>'N/A');
+            }
+
+            if(empty($pedi['padre']))
+            {
+                $pedi['padre']=array('identificacion'=>'N/A','raza'=>'N/A');
+            }
+
+            if(empty($pedi['abuelo_padre']))
+            {
+                $pedi['abuelo_padre']=array('identificacion'=>'N/A','raza'=>'N/A');
+            }
+
+            if(empty($pedi['abuela_padre']))
+            {
+                $pedi['abuela_padre']=array('identificacion'=>'N/A','raza'=>'N/A');
+            }
+
+            if(empty($pedi['abuelo_madre']))
+            {
+                $pedi['abuelo_madre']=array('identificacion'=>'N/A','raza'=>'N/A');
+            }
+
+            if(empty($pedi['abuela_madre']))
+            {
+                $pedi['abuela_madre']=array('identificacion'=>'N/A','raza'=>'N/A');
+            }
+
+            }
+        }
+        
+
+      /* echo "<pre>";
+        print_r($pedi);
+        print_r($nada);
+        echo "</pre>";
+        yii::$app->end();
+*/
+
+/*        $madre = Animal::find()
+        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->groupBy('animal.identificacion')
+        ->where(['identificacion'=>$hijo->madre])
+        ->one();
+
+
+
+        echo "<pre>";
+        print_r($madre);
+        echo "</pre>";
+        yii::$app->end();
+
+        $padre = Animal::find()
+        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->groupBy('animal.identificacion')
+        ->where(['identificacion'=>$hijo->padre])
+        ->one();*/
 
         /*$query=Animal::find()->select(["LPAD(identificacion, 6, '0') as identificacion","sexo","fecha_nacimiento","nuemro_arete","LPAD(madre, 6, '0') as madre","LPAD(padre, 6, '0') as padre"]);*/
 
@@ -152,6 +313,7 @@ class AnimalController extends Controller
             'model' => $model,
             'model_repro'=>$model_repro,
             'model_produ'=>$model_produ,
+            'pedi'=>$pedi,
             ]);
     }
 
@@ -517,26 +679,59 @@ public function actionBasicos($id)
         $model_repro = Parto::find()
         ->where(['animal_identificacion'=>$id])
         ->one();
+
+        $query = Animal::find();
+        $query->select(["LPAD(animal.identificacion, 6, '0') as identificacion_otro","animal.sexo as sexo"," GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","animal.fecha_nacimiento","LPAD(animal.nuemro_arete,4,0) as arete","LPAD(animal.madre, 6, '0') as madre","LPAD(animal.padre, 6, '0') as padre","identificacion"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->where(['madre'=>$id])
+        ->groupBy('identificacion_otro')
+        ->orderBy('raza_animal.porcentaje')
+        ->all();
+
+        $hijos = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+            'pageSize' => 10,
+            ],
+        ]);
        
 
         return $this->render('reproduccion', [
             'model_repro'=>$model_repro,
+            'hijos'=>$hijos,
         ]);
     }
 
-    public function actionProduccion($id)
+    public function actionPedigree($id)
     {
-        $model_produ = Ordeno::find()
-        ->select(["ROUND(pesaje_total/DATEDIFF(ordeno.fecha,parto.fecha),1) as pesaje_p","pesaje_total","DATEDIFF(ordeno.fecha,parto.fecha) as dias_acum","parto_id_parto","parto.fecha as Inicio_Lactancia","id_ordeno"])
-        ->where(['ordeno.animal_identificacion'=>$id])
-        ->join('JOIN','parto','parto.id_parto=ordeno.parto_id_parto')
-        ->orderBy(['id_ordeno'=>SORT_DESC])
+/*        $hijo = Animal::find()->where(['identificacion'=>$id])->one();
 
+        $madre = Animal::find()
+        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->groupBy('animal.identificacion')
+        ->where(['identificacion'=>$hijo->madre])
         ->one();
 
-        return $this->render('produccion', [
-            'model_produ'=>$model_produ,
-        ]);
+        echo "<pre>";
+        print_r($madre);
+        echo "</pre>";
+        yii::$app->end();
+
+        $padre = Animal::find()
+        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->groupBy('animal.identificacion')
+        ->where(['identificacion'=>$hijo->padre])
+        ->one();*/
+
+        
+
+      /*  return $this->render('pedigree', [
+            'hijo'=>$hijo,
+            'madre'=>$madre,
+            'padre'=>$padre,
+        ]);*/
     }
 
 
