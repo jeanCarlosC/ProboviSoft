@@ -15,6 +15,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
+use yii\helpers\Url;
 
 /**
  * OrdenoController implements the CRUD actions for Ordeno model.
@@ -131,7 +132,7 @@ class OrdenoController extends Controller
     echo "</pre>";
     yii::$app->end();*/
     $dataProvider = new ArrayDataProvider([
-        'allModels'=>$animales,
+        'allModels'=>(empty($animales)) ? array() : $animales,
     ]);
 
 
@@ -194,7 +195,7 @@ if (Yii::$app->request->post())
 
         
         return $this->render('pesajes', [
-            'dataProvider' => $animales,
+            'dataProvider' => (empty($animales)) ? array() : $animales,
             'model'=>(empty($model)) ? [new Ordeno] : $model,
         ]);
 
@@ -206,6 +207,27 @@ if (Yii::$app->request->post())
         $searchModel = new OrdenoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $model = new ordeno();
+
+            $Partos= Parto::find()->count();
+
+             if($Partos<1)
+             {
+
+
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Debe registrar Partos previamente para registrar un Pesaje de Leche.',
+            'title' => '¡NO existen PARTOS!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(Yii::$app->homeUrl);
+
+             }
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,

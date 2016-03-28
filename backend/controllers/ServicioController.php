@@ -20,6 +20,7 @@ use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use backend\models\Model;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 /**
  * ServicioController implements the CRUD actions for Servicio model.
  */
@@ -170,7 +171,48 @@ class ServicioController extends Controller
         ->where(["sexo"=>"H"])
         ->orderBy(["fecha_nacimiento"=>SORT_DESC])
         ->all();
+        $animal_v = array();
         /*$animales_e[] = array();*/
+
+            $animal_1= Animal::find()->where(['sexo'=>'H'])->count();
+             $animal_2= Animal::find()->where(['sexo'=>'M'])->count();
+             $semen_1 = Semen::find()->count();
+
+            if(!($animal_2))
+            {
+
+
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Debe registrar previamente un toro para registrar un servicio',
+            'title' => '¡NO existen TOROS!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(Yii::$app->homeUrl);
+
+            }
+            
+            if(!($semen_1))
+            {
+
+
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Debe registrar previamente Semen para registrar un servicio',
+            'title' => '¡NO existe SEMEN!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return Url::toRoute(Yii::$app->homeUrl);
+
+            }
 
 
         foreach ($animales as $key => $value) {
@@ -203,7 +245,7 @@ class ServicioController extends Controller
         
             $dataProviderAnimales = new ArrayDataProvider([
             'key'=>'identificacion',
-            'allModels' => $animales_e,
+            'allModels' =>  (empty($animales_e)) ? $animal_v : $animales_e,
             'pagination' => [
             'pageSize' => 10,
             ],

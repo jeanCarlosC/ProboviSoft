@@ -3698,9 +3698,9 @@ tbody.collapse.in {
 .dropdown-header {
   display: block;
   padding: 3px 20px;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.42857143;
-  color: #16ad29;
+  color: #152A38;
   white-space: nowrap;
 }
 .dropdown-backdrop {

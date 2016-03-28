@@ -190,7 +190,7 @@ class DiagnosticoController extends Controller
 
         $searchModel = new DiagnosticoSearch();
         $dataProvider= $searchModel->search(Yii::$app->request->queryParams);
-        
+        $animal_v = array();
 
         $animales = Animal::find()->select(["identificacion"])
         ->where(["sexo"=>"H"])
@@ -223,7 +223,7 @@ class DiagnosticoController extends Controller
 
             $dataProviderAnimales = new ArrayDataProvider([
             'key'=>'identificacion',
-            'allModels' => $animales_e,
+            'allModels' => (empty($animales_e)) ? $animal_v : $animales_e,  
             'pagination' => [
             'pageSize' => 5,
             ],

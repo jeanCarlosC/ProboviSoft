@@ -58,30 +58,25 @@ AppAsset::register($this);
             'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
         ],
         [
-            'label' => 'Modulos Registro',
+            'label' => 'Modulos',
             'items' => [
-                ['label' => 'Registro de Animales', 'url' => Url::toRoute('/animal/')],
-                ['label' => 'Registro de Semen', 'url' => Url::toRoute('/semen/')],
+                /*'<li class="divider"></li>',*/
+                '<li class="dropdown-header"><b>Registro</b></li>',
+                ['label' => 'Animales', 'url' => Url::toRoute('/animal/')],
+                ['label' => 'Semen', 'url' => Url::toRoute('/semen/')],
+                '<li class="divider"></li>',
+                '<li class="dropdown-header"><b>Eventos</b></li>',
+                ['label' => 'Servicios', 'url' =>Url::toRoute('/servicio/')],
+                ['label' => 'Diagnosticos', 'url' => Url::toRoute('/diagnostico/')],
+                ['label' => 'Partos', 'url' => Url::toRoute('/parto/')],
+                ['label' => 'Abortos', 'url' => Url::toRoute('/aborto/')],
+                ['label' => 'Pesajes de leche', 'url' => Url::toRoute('/ordeno/')],
+                ['label' => 'Secados', 'url' => Url::toRoute('/secado/')],
+                ['label' => 'Pesos Corporales', 'url' => Url::toRoute('/peso/')],        
 
         ],
         
         'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
-        ],
-
-        [
-            'label' => 'Eventos',
-            'items' => [
-            ['label' => 'Servicios', 'url' =>Url::toRoute('/servicio/')],
-            ['label' => 'Diagnosticos', 'url' => Url::toRoute('/diagnostico/')],
-            ['label' => 'Partos', 'url' => Url::toRoute('/parto/')],
-            ['label' => 'Abortos', 'url' => Url::toRoute('/aborto/')],
-            ['label' => 'Pesajes de leche', 'url' => Url::toRoute('/ordeno/')],
-            ['label' => 'Secados', 'url' => Url::toRoute('/secado/')],
-            ['label' => 'Pesos Corporales', 'url' => Url::toRoute('/peso/')],        
-
-            ],
-
-            'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
         ],
 
         [

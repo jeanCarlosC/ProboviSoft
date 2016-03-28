@@ -67,6 +67,25 @@ class StatusEliminacionController extends Controller
     {
         $model = new StatusEliminacion();
 
+        $animal_1= Animal::find()->where(['sexo'=>'H'])->count();
+if(!($animal_1))
+            {
+
+
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Debe registrar previamente Animles para registrar una eliminacion',
+            'title' => '¡NO existen Animales!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(['index']);
+
+            }
+
         $query2 = new Query;
         $query2->select(["identificacion"])
         ->from('animal');

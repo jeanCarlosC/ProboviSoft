@@ -41,7 +41,7 @@ class SemenController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','create','view','update','agregar','salida','imagen'],
+                        'actions' => ['logout', 'index','create','view','update','agregar','salida','imagen','delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
