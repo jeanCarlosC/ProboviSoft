@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -21,10 +21,27 @@ $this->params['breadcrumbs'][] = $this->title;
   <p>
         <?= Html::a('Registar Animal', ['create'], ['class' => 'btn btn-primary']) ?>
     </p>
-    <?php Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax'=>true,
+        'pjaxSettings'=>
+        [
+           'neverTimeout'=>true,
+        ],
+        'export'=>false,
+        /*'hover'=>true,*/
+        'rowOptions'=>function($model){
+                    if($model->statusMV == 'Inactivo')
+                    {
+                        return ['style'=>'color:red'];
+                    }
+                    else if($model->statusMV == 'Activo')
+                    {
+                        return ['style'=>'color:#000'];
+                    }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -33,13 +50,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'raza',
             'fecha_nacimiento',
             'arete',
+            [
+            'attribute'=>'status_MV',
+            'value'=>'StatusMV',
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
 
                 'header'=>'Opciones',
 
-                'headerOptions' => ['width' => '20'],
+                'headerOptions' => ['width' => '10'],
 
                 'template' => '{view}{update}{delete}',
                 'urlCreator' => function ($action, $model, $key, $index) 
@@ -50,17 +71,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \Yii::$app->getUrlManager()->createUrl(['animal/view', 'id' => $model['identificacion']]);
                     }
                     else if ($action === 'update') {
-                    // return \Yii::$app->getUrlManager()->createUrl(['nomina/update', 'id' => $model['idnomina']]);
-                    return Url::toRoute(['animal/update', 'id' => $model['identificacion']]);
-                    } else if ($action === 'delete') {
+
+                    return  Url::toRoute(['animal/update', 'id' => $model['identificacion']]);
+
+                    } 
+                    else if ($action === 'delete') {
+
                     return \Yii::$app->getUrlManager()->createUrl(['animal/delete', 'id' => $model['identificacion']]);
+
                     }
                 }
 
             ],
         ],
     ]); ?>
-    <?php Pjax::end(); ?>
+
 </div>
 <?php
 $script = <<< JS

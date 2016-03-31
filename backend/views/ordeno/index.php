@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
@@ -88,10 +88,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ?> 
 
-<?php Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax'=>true,
+        'pjaxSettings'=>
+        [
+           'neverTimeout'=>true,
+        ],
+        'export'=>false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -146,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?>
+
 </div>
 <?php
 $script = <<< JS

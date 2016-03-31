@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Status Eliminacions', 'url' => ['i
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="perfil">
+<?= Html::a('<i class="glyphicon glyphicon-chevron-left"></i> Atras', ['index'], ['class' => 'btn btn-link']) ?>
 
     <h1 class="titulo"><?= Html::encode($this->title) ?></h1>
 

@@ -16,7 +16,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
 use yii\helpers\Url;
-
+use backend\models\StatusEliminacion;
 /**
  * OrdenoController implements the CRUD actions for Ordeno model.
  */
@@ -121,8 +121,12 @@ class OrdenoController extends Controller
             $model[$i] = new Ordeno();
             $model[$i]->fecha = $f;
             $model[$i]->animal_identificacion=$ordeño->identificacion_otro;
+            $status = StatusEliminacion::find()->where(['animal_identificacion'=>$value['identificacion']])->one();
+            if(empty($status))
+            {
             $animales[$i] = array('animal_identificacion'=>$ordeño->animal_identificacion,'pesaje'=>'','fecha'=>$f,'potrero'=>$p,'dias'=>$dias_1,'parto'=>$parto->id_parto);
             $i++;
+            }
         }
      }
     }

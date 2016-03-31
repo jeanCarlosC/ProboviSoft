@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -20,16 +20,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Registrar Parto', ['create'], ['class' => 'btn btn-primary']) ?>
     </p>
-<?php Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax'=>true,
+        'pjaxSettings'=>
+        [
+           'neverTimeout'=>true,
+        ],
+        'export'=>false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'identificacion_otro',
+            'animal_identificacion',
             'fecha',
-            'becerro',
+            'cod_becerro',
             'sexo_becerro',
 
             [
@@ -58,5 +64,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Pjax::end(); ?>
+
 </div>

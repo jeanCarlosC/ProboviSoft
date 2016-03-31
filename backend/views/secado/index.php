@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\SecadoSearch */
@@ -18,10 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Registrar Secado', ['create'], ['class' => 'btn btn-primary']) ?>
     </p>
-<?php Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pjax'=>true,
+        'pjaxSettings'=>
+        [
+           'neverTimeout'=>true,
+        ],
+        'export'=>false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -33,5 +39,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-<?php Pjax::end(); ?>
+
 </div>

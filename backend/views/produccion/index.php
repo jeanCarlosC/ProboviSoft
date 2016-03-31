@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -22,6 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
                echo GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                'pjax'=>true,
+                'pjaxSettings'=>
+                [
+                'neverTimeout'=>true,
+                ],
+                'export'=>false,
                 'columns' => 
                 [
                     ['class' => 'yii\grid\SerialColumn'],

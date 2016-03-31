@@ -42,7 +42,7 @@ class SecadoSearch extends Secado
     public function search($params)
     {
         $query = Secado::find();
-        $query->select(["LPAD(secado.animal_identificacion, 6, '0') as identificacion","parto.fecha as Inicio_Lactancia","secado.fecha as Fin_Lactancia","DATEDIFF(secado.fecha,parto.fecha) as dias","id_secado"])
+        $query->select(["secado.animal_identificacion as identificacion","parto.fecha as Inicio_Lactancia","secado.fecha as Fin_Lactancia","DATEDIFF(secado.fecha,parto.fecha) as dias","id_secado"])
         ->join('JOIN','parto','parto.id_parto = secado.parto_id_parto')
         ->all();
 

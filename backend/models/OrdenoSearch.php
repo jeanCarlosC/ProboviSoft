@@ -44,7 +44,7 @@ class OrdenoSearch extends Ordeno
     public function search($params)
     {
         $query = Ordeno::find();
-        $query->select(["LPAD(animal_identificacion, 6, '0') as identificacion","fecha","pesaje","id_ordeno","dias","animal_identificacion","parto_id_parto"])
+        $query->select(["animal_identificacion as identificacion","fecha","pesaje","id_ordeno","dias","animal_identificacion","parto_id_parto"])
         ->all();
 
         $dataProvider = new ActiveDataProvider([

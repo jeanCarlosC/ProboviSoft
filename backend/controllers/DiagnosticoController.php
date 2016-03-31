@@ -16,6 +16,7 @@ use yii\data\ArrayDataProvider;
 use backend\models\Model;
 use yii\widgets\ActiveForm;
 use backend\models\AnimalSearch2;
+use backend\models\StatusEliminacion;
 
 /**
  * DiagnosticoController implements the CRUD actions for Diagnostico model.
@@ -205,13 +206,13 @@ class DiagnosticoController extends Controller
             ->orderBy(["id_servicio"=>SORT_DESC])
             ->one();
 
-            
+            $status = StatusEliminacion::find()->where(["animal_identificacion"=>$value['identificacion']])->one(); 
 
             if(!empty($ultimo_servicio)){
             $parto = Parto::find()->where(["servicio_id_servicio"=>$ultimo_servicio->id_servicio])
             ->one();
 
-            if( (empty($parto)) )
+            if( (empty($parto)) && (empty($status)) )
             {
                 $animales_e[] = array("identificacion"=>$value['identificacion']);
             }

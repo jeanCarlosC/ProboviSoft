@@ -39,6 +39,7 @@ class Animal extends \yii\db\ActiveRecord
     public $padre_1;
     public $estado;
     public $hijosp;
+    public $status_MV;
     /**
      * @inheritdoc
      */
@@ -96,6 +97,7 @@ class Animal extends \yii\db\ActiveRecord
             'padre_1'=>'Padre',
             'hijosp'=>'Hijos',
             'nombre' => 'Nombre',
+            'status_MV'=> 'Status',
         ];
     }
 
@@ -210,6 +212,22 @@ class Animal extends \yii\db\ActiveRecord
         ->orderBy('raza_animal.porcentaje')
         ->all();
         return $query;
+    }
+
+    public function getStatusMV()
+    {
+        $status = StatusEliminacion::find()->where(['animal_identificacion'=>$this->identificacion])->one();
+
+        if(empty($status))
+        {
+            $S = 'Activo';
+        }
+        else
+        {
+            $S = 'Inactivo';
+        }
+
+        return $S;
     }
 
 }

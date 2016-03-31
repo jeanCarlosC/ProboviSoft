@@ -69,9 +69,9 @@ class AbortoController extends Controller
      */
     public function actionView($id)
     {
-        $model = Aborto::find()->select(["LPAD(animal_identificacion, 6, '0') as identificacion","fecha","observacion","servicio_id_servicio","id_aborto","sexo_feto"])->where(['id_aborto'=>$id])->one();
+        $model = Aborto::find()->select(["animal_identificacion as identificacion","fecha","observacion","servicio_id_servicio","id_aborto","sexo_feto"])->where(['id_aborto'=>$id])->one();
 
-        $servicio = Servicio::find()->select(["LPAD(animal_identificacion, 6, '0') as animal","fecha","tipo_servicio","LPAD(semen_identificacion,6,'0') as semen","inseminador","LPAD(toro, 6, '0') as toro_monta"])->where(['id_servicio'=>$model->servicio_id_servicio])->one();
+        $servicio = Servicio::find()->select(["animal_identificacion as animal","fecha","tipo_servicio","semen_identificacion semen","inseminador","toro as toro_monta"])->where(['id_servicio'=>$model->servicio_id_servicio])->one();
 
         return $this->render('view', [
             'model' => $model,

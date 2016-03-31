@@ -15,6 +15,7 @@ use backend\models\Salida;
 use backend\models\Peso;
 use backend\models\Parto;
 use backend\models\Semen;
+use backend\models\StatusEliminacion;
 use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
@@ -218,11 +219,11 @@ class ServicioController extends Controller
         foreach ($animales as $key => $value) {
 
             
-
+        $status = StatusEliminacion::find()->where(["animal_identificacion"=>$value['identificacion']])->one();  
         $peso= Peso::find()->where(["animal_identificacion"=>$value['identificacion']])->andwhere(['>', 'peso', 240])
         ->orderBy(['fecha'=>SORT_DESC])
         ->one();
-            if($peso)
+            if(!empty($peso) && empty($status))
             {
             $ultimo_servicio = Servicio::find()->where(["animal_identificacion"=>$value['identificacion']])
             ->orderBy(["id_servicio"=>SORT_DESC])

@@ -44,7 +44,7 @@ class PartoSearch extends Parto
     public function search($params)
     {
         $query = Parto::find();
-        $query->select(["LPAD(animal_identificacion, 6, '0') as identificacion_otro","fecha","LPAD(cod_becerro,6,0) as becerro","sexo_becerro","id_parto"])
+        $query->select(["animal_identificacion","fecha","cod_becerro","sexo_becerro","id_parto"])
         ->all();
 
         $dataProvider = new ActiveDataProvider([

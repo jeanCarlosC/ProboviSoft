@@ -38,6 +38,11 @@ $this->title = $model->identificacion_otro;
             'value' => $model->estados,
 
             ],
+            [
+            'attribute' => 'status_MV',
+            'value' => $model->statusMV,
+
+            ],
             
 
             'padre_1',

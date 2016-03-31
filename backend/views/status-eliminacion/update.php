@@ -10,12 +10,14 @@ $this->params['breadcrumbs'][] = ['label' => 'Status Eliminacions', 'url' => ['i
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="status-eliminacion-update">
+<div class="formulario">
+<?= Html::a('<i class="glyphicon glyphicon-chevron-left"></i> Atras', ['index'], ['class' => 'btn btn-link']) ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="titulo"><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
+        'data' => $data,
     ]) ?>
 
 </div>

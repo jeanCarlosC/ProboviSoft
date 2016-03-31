@@ -42,7 +42,7 @@ class AbortoSearch extends Aborto
     public function search($params)
     {
         $query = Aborto::find();
-        $query->select(["LPAD(animal_identificacion, 6, '0') as identificacion","fecha","observacion","id_aborto","sexo_feto"])
+        $query->select(["animal_identificacion as identificacion","fecha","observacion","id_aborto","sexo_feto"])
         ->all();
 
         $dataProvider = new ActiveDataProvider([
@@ -67,7 +67,8 @@ class AbortoSearch extends Aborto
             'animal_identificacion' => $this->animal_identificacion,
         ]);
 
-        $query->andFilterWhere(['like', 'observacion', $this->observacion]);
+        $query->andFilterWhere(['like', 'observacion', $this->observacion])
+        ->andFilterWhere(['like', 'animal_identificacion', $this->identificacion]);
 
         return $dataProvider;
     }

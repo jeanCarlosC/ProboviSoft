@@ -23,6 +23,7 @@ use backend\models\Ordeno;
 use backend\models\Semen;
 use backend\models\Raza;
 use yii\filters\AccessControl;
+use backend\models\StatusEliminacion;
 
 /**
  * AnimalController implements the CRUD actions for Animal model.
@@ -278,37 +279,6 @@ class AnimalController extends Controller
             }
         }
         
-
-      /* echo "<pre>";
-        print_r($pedi);
-        print_r($nada);
-        echo "</pre>";
-        yii::$app->end();
-*/
-
-/*        $madre = Animal::find()
-        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo"])
-        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
-        ->groupBy('animal.identificacion')
-        ->where(['identificacion'=>$hijo->madre])
-        ->one();
-
-
-
-        echo "<pre>";
-        print_r($madre);
-        echo "</pre>";
-        yii::$app->end();
-
-        $padre = Animal::find()
-        ->select(["GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","identificacion","sexo"])
-        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
-        ->groupBy('animal.identificacion')
-        ->where(['identificacion'=>$hijo->padre])
-        ->one();*/
-
-        /*$query=Animal::find()->select(["LPAD(identificacion, 6, '0') as identificacion","sexo","fecha_nacimiento","nuemro_arete","LPAD(madre, 6, '0') as madre","LPAD(padre, 6, '0') as padre"]);*/
-
         return $this->render('view', [
             'model' => $model,
             'model_repro'=>$model_repro,
@@ -442,8 +412,41 @@ class AnimalController extends Controller
         $model = $this->findModel($id);
         $models_razas = $model->razaIdRazas;
         $model_peso = $this->findModel_peso($id);
-
+        $status = StatusEliminacion::find()->where(['animal_identificacion'=>$id])->one();
         $parto_existe = Parto::find()->where(['animal_identificacion'=>$id])->count();
+
+        if(!empty($status))
+        {
+            if($status->causa == 'V'){
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Esta animal se encuentra inactivo, motivo: VENTA',
+            'title' => '¡Error!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(['index']); 
+        }
+
+            if($status->causa == 'M'){
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Esta animal se encuentra inactivo, motivo: MUERTE',
+            'title' => '¡Error!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(['index']); 
+        }
+
+        }
+
         if($parto_existe>0)
         {
             Yii::$app->getSession()->setFlash('notificacion-error', [
@@ -588,6 +591,39 @@ class AnimalController extends Controller
     {
 
         $parto_existe = Parto::find()->where(['animal_identificacion'=>$id])->count();
+        $status = StatusEliminacion::find()->where(['animal_identificacion'=>$id])->one();
+        
+        if(!empty($status))
+        {
+            if($status->causa == 'V'){
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Esta animal se encuentra inactivo, motivo: VENTA',
+            'title' => '¡Error!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(['index']); 
+        }
+
+            if($status->causa == 'M'){
+            Yii::$app->getSession()->setFlash('notificacion-error', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'glyphicon glyphicon-error-sign',
+            'message' => 'Esta animal se encuentra inactivo, motivo: MUERTE',
+            'title' => '¡Error!',
+            'positonY' => 'top',
+            'positonX' => 'right'
+            ]);
+
+            return $this->redirect(['index']); 
+        }
+
+        }
         if($parto_existe>0)
         {
             Yii::$app->getSession()->setFlash('notificacion-error', [

@@ -64,16 +64,25 @@ class Secado extends \yii\db\ActiveRecord
 
     public function checkAnimal($attribute, $params)
         {
-           $animal = Animal::find()->where(['identificacion'=>$this->animal_identificacion])->one();
+            $animal = Animal::find()->where(['identificacion'=>$this->animal_identificacion])->one();
+            $status = StatusEliminacion::find()->where(['animal_identificacion'=>$this->animal_identificacion])->one();
             if(empty($animal))
             {
 
                 $this->addError($attribute,'el animal '.$this->animal_identificacion.' no existe');
             }
+            elseif(!empty($status))
+            {
+                $this->addError($attribute,'el animal '.$this->animal_identificacion.' no se encuentra activo');
+            }
+            
             elseif($animal->sexo=='M')
             {
                 $this->addError($attribute,'el animal '.$this->animal_identificacion.' no es una hembra');
             }
+
+            
+
         }
 
     /**

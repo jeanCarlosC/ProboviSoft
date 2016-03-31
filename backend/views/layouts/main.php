@@ -64,6 +64,7 @@ AppAsset::register($this);
                 '<li class="dropdown-header"><b>Registro</b></li>',
                 ['label' => 'Animales', 'url' => Url::toRoute('/animal/')],
                 ['label' => 'Semen', 'url' => Url::toRoute('/semen/')],
+                ['label' => 'Venta/Muerte', 'url' => Url::toRoute('/status-eliminacion/')],
                 '<li class="divider"></li>',
                 '<li class="dropdown-header"><b>Eventos</b></li>',
                 ['label' => 'Servicios', 'url' =>Url::toRoute('/servicio/')],

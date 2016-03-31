@@ -77,7 +77,7 @@ class PartoController extends Controller
     public function actionView($id)
     {
 
-        $model = Parto::find()->select(["LPAD(animal_identificacion, 6, '0') as identificacion_otro","fecha","cod_becerro","sexo_becerro","servicio_id_servicio","id_parto"])->where(['id_parto'=>$id])->one();
+        $model = Parto::find()->select(["animal_identificacion as identificacion","fecha","cod_becerro","sexo_becerro","servicio_id_servicio","id_parto"])->where(['id_parto'=>$id])->one();
 
         $servicio = Servicio::find()->select(["LPAD(animal_identificacion, 6, '0') as animal","fecha","tipo_servicio","LPAD(semen_identificacion,6,'0') as semen","inseminador","LPAD(toro, 6, '0') as toro_monta"])->where(['id_servicio'=>$model->servicio_id_servicio])->one();
 
