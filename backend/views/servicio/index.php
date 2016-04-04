@@ -8,6 +8,10 @@ use yii\bootstrap\Button;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
+use kartik\datecontrol\DateControl;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ServicioSearch */
@@ -44,39 +48,52 @@ $this->params['breadcrumbs'][] = $this->title;
             'options' => ['enctype' => 'multipart/form-data'],
             ]); ?>
             <div class="row">
+
             <div class='col-md-12'>
-                <?= $form->field($model, 'fecha')->widget(DatePicker::classname(), [
-                'options' => ['placeholder' => 'seleccione la fecha ...'],
-                'pluginOptions' => [
-                'format' => 'yyyy-mm-dd',
-                'autoclose'=>true
+            <?=
+            $form->field($model, 'animales')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map($animales, 'identificacion', 'identificacion'),
+            'maintainOrder' => true,
+            'toggleAllSettings' => [
+            'selectLabel' => '<i class="glyphicon glyphicon-ok-circle" style="font-size:15px;"></i> <h style="font-size:15px;">Seleccionar todos</h>',
+            'unselectLabel' => '<i class="glyphicon glyphicon-remove-circle" style="font-size:15px;"></i> <h style="font-size:15px;">Eliminar todos</h>',
+            'selectOptions' => ['class' => 'text-success'],
+            'unselectOptions' => ['class' => 'text-danger'],
+            ],
+            'options' => ['placeholder' => 'Seleccione hembras ...', 'multiple' => true],
+            'pluginOptions' => [
+            'allowClear' => false,
+
+            ],
+            ]);
+            ?>
+            </div>
+
+            <div class='col-md-12'>
+                <?php
+
+                echo '<div class="input-group drp-container col-md-12">';
+                echo $form->field($model, 'fecha')->widget(DateRangePicker::classname(), [
+                'value'=>'01/12/2015',
+                'useWithAddon'=>true,
+                'pluginOptions'=>[
+                'allowClear' => true,
+                'singleDatePicker'=>true,
+                'showDropdowns'=>true
                 ]
                 ]);
+                 echo '</div>';
+                
                 ?>
+<br>
             </div>
+
 
             <div class='col-md-12'>
                 <?= $form->field($model, "tipo_servicio")->dropDownList([ 'IA' => 'Inseminacion Artificial', 'MN' => 'Monta Natural', ], ['prompt' => 'Seleccione el tipo de servicio...']);?>
             </div>
 
-            <div class="col-md-12"><h4 align="center">Seleccione las hembras a servir</h4></div>
 
-            <div class='col-md-12'>
-            <?=GridView::widget([
-            'dataProvider' => $animales,
-            'id' => 'grid',
-            'pjax'=>true,
-        'pjaxSettings'=>
-        [
-           'neverTimeout'=>true,
-        ],
-        'export'=>false,
-            'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
-            'identificacion',
-            ],
-            ]); ?>
-            </div>
 
             
             <div class="col-md-12">

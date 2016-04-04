@@ -74,7 +74,7 @@ class DiagnosticoController extends Controller
             {
                 $model->attributes = $_POST['Diagnostico'];
 
-            $key = yii::$app->request->post('selection');
+            $key = $_POST['Diagnostico']['animales'];
             $key = serialize($key);
 
             $fecha = $model->fecha;
@@ -211,6 +211,7 @@ class DiagnosticoController extends Controller
             if(!empty($ultimo_servicio)){
             $parto = Parto::find()->where(["servicio_id_servicio"=>$ultimo_servicio->id_servicio])
             ->one();
+            
 
             if( (empty($parto)) && (empty($status)) )
             {
@@ -221,21 +222,10 @@ class DiagnosticoController extends Controller
     
         }
 
-
-            $dataProviderAnimales = new ArrayDataProvider([
-            'key'=>'identificacion',
-            'allModels' => (empty($animales_e)) ? $animal_v : $animales_e,  
-            'pagination' => [
-            'pageSize' => 5,
-            ],
-            ]);
-
         return $this->render('index', [
-/*            'searchModel2' => $searchModel2,
-            'dataProvider2' => $dataProvider2,*/
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'dataProvider2'=>$dataProviderAnimales,
+            'animales'=>empty($animales_e) ? array() : $animales_e,
             'model'=>$model,
         ]);
     }

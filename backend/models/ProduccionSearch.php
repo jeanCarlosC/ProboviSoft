@@ -16,13 +16,18 @@ class ProduccionSearch extends Animal
     /**
      * @inheritdoc
      */
-    public $identificacion_otro;
+    
     public $arete;
+    public $PAL;
+    public $DL;
+    public $Lac;
+    public $PLL;
+    public $PLD;
     public function rules()
     {
         return [
-            [['identificacion', 'nuemro_arete', 'madre', 'padre','identificacion_otro','arete'], 'integer'],
-            [['sexo', 'fecha_nacimiento','raza'], 'safe'],
+            [['identificacion', 'nuemro_arete', 'madre', 'padre','arete'], 'integer'],
+            [['sexo', 'fecha_nacimiento','raza','PAL','DL','Lac','PLL','PLD'], 'safe'],
         ];
     }
 
@@ -52,7 +57,7 @@ class ProduccionSearch extends Animal
         ->all();*/
 
         $query = Animal::find();
-        $query->select(["LPAD(animal.identificacion, 6, '0') as identificacion_otro","animal.sexo as sexo","animal.fecha_nacimiento","LPAD(animal.nuemro_arete,4,0) as arete","LPAD(animal.madre, 6, '0') as madre","LPAD(animal.padre, 6, '0') as padre"])
+        $query->select(["identificacion","animal.sexo as sexo","animal.fecha_nacimiento","animal.nuemro_arete as arete","madre","padre"])
         ->join('JOIN','status_animal','status_animal.animal_identificacion = animal.identificacion')
         ->groupBy('animal_identificacion')
         ->all();
@@ -66,6 +71,14 @@ class ProduccionSearch extends Animal
             'pageSize' => 10,
             ],
         ]);
+
+/*
+        $dataProvider->setSort([
+        'attributes'=>[
+            'identificacion',
+            'Lac',
+        ]
+    ]);*/
 
         $this->load($params);
 
@@ -84,7 +97,7 @@ class ProduccionSearch extends Animal
         ]);
 
         $query->andFilterWhere(['like', 'sexo', $this->sexo])
-        ->andFilterWhere(['like','identificacion', $this->identificacion_otro])
+        ->andFilterWhere(['like','identificacion', $this->identificacion])
         ->andFilterWhere(['like','sexo', $this->sexo])
         ->andFilterWhere(['like','nuemro_arete', $this->arete])
         /*->andFilterWhere(['like','raza', $this->raza])*/;

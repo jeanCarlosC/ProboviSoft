@@ -31,7 +31,6 @@ class Animal extends \yii\db\ActiveRecord
 
     public $raza="";
     public $raza_animal="";
-    public $identificacion_otro="";
     public $avatar;
     public $edad;
     public $arete;
@@ -40,6 +39,17 @@ class Animal extends \yii\db\ActiveRecord
     public $estado;
     public $hijosp;
     public $status_MV;
+    public $PAL;
+    public $DL;
+    public $Lac;
+    public $PLL;
+    public $PLD;
+    public $PDL;
+    public $PA;
+    public $lactancias;
+    
+
+    
     /**
      * @inheritdoc
      */
@@ -98,6 +108,12 @@ class Animal extends \yii\db\ActiveRecord
             'hijosp'=>'Hijos',
             'nombre' => 'Nombre',
             'status_MV'=> 'Status',
+            'PAL'=>'Produccion Total',
+            'DL'=>'Total Dias/Lac',
+            'Lac'=>'Lactancias',
+            'PLD'=>'Promedio Leche/Dia',
+            'PLL'=>'Promedio Leche/Lactancia',
+            'PDL'=>'PDL',
         ];
     }
 
@@ -207,7 +223,7 @@ class Animal extends \yii\db\ActiveRecord
         $query = Animal::find();
         $query->select([" GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza"])
         ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
-        ->where(['animal_identificacion'=>$this->identificacion_otro])
+        ->where(['animal_identificacion'=>$this->identificacion])
         ->groupBy('raza_animal.animal_identificacion')
         ->orderBy('raza_animal.porcentaje')
         ->all();
@@ -228,6 +244,22 @@ class Animal extends \yii\db\ActiveRecord
         }
 
         return $S;
+    }
+
+    public function getPro_Acum_Lac()
+    {
+        $ordeño = Ordeno::find()->where(['animal_identificacion'=>$this->identificacion])->all();
+        $status = StatusAnimal::find()->where(['animal_identificacion'=>$this->identificacion])->andwhere(['status_id_status'=>'O'])->count();
+
+        $prod_x_pesaje=0;
+        $produccion_acum=0;
+        $dias_acum=0;
+        foreach ($ordeño as $key => $value) {
+            $prod_x_pesaje = $value['pesaje']*$value['dias'];
+            $dias_acum += $value['dias'];
+            $produccion_acum += $prod_x_pesaje;
+        }
+        return array('PAL'=>$produccion_acum,'DL'=>$dias_acum,'PLD'=>round($produccion_acum/$dias_acum,1),'L'=>$status,'PLL'=>round($produccion_acum/$status,1),'PDL'=>round($dias_acum/$status,1));
     }
 
 }

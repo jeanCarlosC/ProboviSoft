@@ -15,6 +15,7 @@ use backend\models\RazaAnimal;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\ArrayHelper;
 use kartik\file\FileInput;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Animal */
@@ -56,15 +57,24 @@ use kartik\file\FileInput;
 
 <div class='row col-md-12'>
 
-<div class="col-md-3">
-<?= $form->field($model, 'fecha_nacimiento')->widget(DatePicker::classname(), [
-    'options' => ['placeholder' => 'seleccione la fecha ...'],
-    'pluginOptions' => [
-        'format' => 'yyyy-m-d',
-        'autoclose'=>true
-    ]
-    ]);
-    ?>
+<div class="col-md-3 " style="border-radius: 25px;">
+            <?php
+
+            echo '<div class="input-group drp-container -md-12">';
+            echo $form->field($model, 'fecha_nacimiento')->widget(DateRangePicker::classname(), [
+            
+            'value'=>'01/12/2015',
+            'useWithAddon'=>true,
+            'pluginOptions'=>[
+            'allowClear' => true,
+            'singleDatePicker'=>true,
+            'showDropdowns'=>true
+            ]
+            ]);
+             echo '</div>';
+            
+            ?>
+            <br>
 </div>
 
 <div class='col-md-3'><?php echo $form->field($model_peso, 'peso_nacimiento')->textInput() ?></div>

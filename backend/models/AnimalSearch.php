@@ -16,12 +16,12 @@ class AnimalSearch extends Animal
     /**
      * @inheritdoc
      */
-    public $identificacion_otro;
+
     public $arete;
     public function rules()
     {
         return [
-            [['identificacion', 'nuemro_arete', 'madre', 'padre','identificacion_otro','arete'], 'integer'],
+            [['identificacion', 'nuemro_arete', 'madre', 'padre','arete'], 'integer'],
             [['sexo', 'fecha_nacimiento','raza'], 'safe'],
         ];
     }
@@ -52,9 +52,9 @@ class AnimalSearch extends Animal
         ->all();*/
 
         $query = Animal::find();
-        $query->select(["LPAD(animal.identificacion, 6, '0') as identificacion_otro","animal.sexo as sexo"," GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","animal.fecha_nacimiento","LPAD(animal.nuemro_arete,4,0) as arete","LPAD(animal.madre, 6, '0') as madre","LPAD(animal.padre, 6, '0') as padre","identificacion"])
+        $query->select(["identificacion","animal.sexo as sexo"," GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","animal.fecha_nacimiento","LPAD(animal.nuemro_arete,4,0) as arete","LPAD(animal.madre, 6, '0') as madre","LPAD(animal.padre, 6, '0') as padre"])
         ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
-        ->groupBy('identificacion_otro')
+        ->groupBy('identificacion')
         ->orderBy('raza_animal.porcentaje')
         ->all();
         
@@ -90,5 +90,45 @@ class AnimalSearch extends Animal
         ->andFilterWhere(['like','nuemro_arete', $this->arete]);
 
         return $dataProvider;
+    }
+
+    public function ordenar()
+    {
+
+        $query = Animal::find();
+        $query->select(["identificacion","animal.sexo as sexo"," GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza","animal.fecha_nacimiento","LPAD(animal.nuemro_arete,4,0) as arete","LPAD(animal.madre, 6, '0') as madre","LPAD(animal.padre, 6, '0') as padre"])
+        ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
+        ->groupBy('identificacion')
+        ->orderBy('raza_animal.porcentaje')
+        ->all();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+            'pageSize' => 10,
+            ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+
+
+        $query->andFilterWhere([
+            'fecha_nacimiento' => $this->fecha_nacimiento,
+            'madre' => $this->madre,
+            'padre' => $this->padre,
+        ]);
+
+        $query->andFilterWhere(['like', 'sexo', $this->sexo])
+        ->andFilterWhere(['like','identificacion', $this->identificacion])
+        ->andFilterWhere(['like','sexo', $this->sexo])
+        ->andFilterWhere(['like','nuemro_arete', $this->arete]);
+
+        return $dataProvider;
+
     }
 }

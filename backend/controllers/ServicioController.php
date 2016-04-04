@@ -79,8 +79,12 @@ class ServicioController extends Controller
             if($model->load(Yii::$app->request->post()))
             {
                 $model->attributes = $_POST['Servicio'];
+/*                  echo "<pre>";
+            print_r($_POST['Servicio']['animales']);
+            echo "</pre>";
+            yii::$app->end();*/
 
-            $key = yii::$app->request->post('selection');
+            $key = $_POST['Servicio']['animales'];
             $key = serialize($key);
 
             $fecha = $model->fecha;
@@ -243,21 +247,17 @@ class ServicioController extends Controller
 
             }/*fin if del peso*/
         }/*fin del ciclo*/
-        
+/*        
             $dataProviderAnimales = new ArrayDataProvider([
-            'key'=>'identificacion',
             'allModels' =>  (empty($animales_e)) ? $animal_v : $animales_e,
-            'pagination' => [
-            'pageSize' => 10,
-            ],
-            ]);
+            ]);*/
 
 
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'animales'=>$dataProviderAnimales,
+            'animales'=>empty($animales_e) ? array() : $animales_e,
             'model'=>$model,
         ]);
     }

@@ -30,6 +30,7 @@ class Servicio extends \yii\db\ActiveRecord
     public $toro_otro;
     public $animal;
     public $toro_monta;
+    public $animales;
 
     public static function tableName()
     {
@@ -42,7 +43,7 @@ class Servicio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha','tipo_servicio', 'animal_identificacion'], 'required'],
+            [['fecha','tipo_servicio', 'animal_identificacion','animales'], 'required'],
             [['fecha'], 'checkDate'],
             [['inseminador','semen_identificacion'],'required','on'=>'inseminacion'],
             [['toro'],'required','on'=>'monta'],
@@ -122,6 +123,7 @@ class Servicio extends \yii\db\ActiveRecord
             'animal_identificacion' => 'Animal',
             'semen_identificacion' => 'Semen',
             'toro_otro' => 'Toro',
+            'animales'=> 'Hembras a servir',
         ];
     }
 

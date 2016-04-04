@@ -88,7 +88,8 @@ $url = Url::toRoute(['animal/imagen', 'id' => $model->identificacion_otro]);
     <?php if(!($model->imagen) && $model->sexo =='M'):?>
     <a class="perfilanimalv"><img src="../../uploads/notoro.jpg" alt=""></a>
     <?php endif; ?>
-    <h1>Identificación: <?= Html::encode($this->title) ?></h1>
+    <h4 style="font-size: 26px"><b>Identificación</b>: <?= Html::encode($this->title) ?></h4>
+    <h4 style="font-size: 26px"><b>Nombre</b>: <?php echo $model->nombre; ?></h4>
     </div>
 
 <?php if($model->sexo=='H'):  ?>

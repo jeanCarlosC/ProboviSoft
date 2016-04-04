@@ -8,8 +8,10 @@ use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use kartik\typeahead\TypeaheadBasic;
 use kartik\typeahead\Typeahead;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use kartik\select2\Select2;
+use kartik\daterange\DateRangePicker;
+use yii\helpers\ArrayHelper;
 
 
 /* @var $this yii\web\View */
@@ -58,14 +60,23 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
         </div>
         <div class='col-md-6'>
-        <?= $form->field($model, 'fecha')->widget(DatePicker::classname(), [
-        'options' => ['placeholder' => 'seleccione la fecha ...'],
-        'pluginOptions' => [
-        'format' => 'yyyy-m-d',
-        'autoclose'=>true
+        <?php
+
+
+        echo '<div class="input-group drp-container col-md-12">';
+        echo $form->field($model, 'fecha')->widget(DateRangePicker::classname(), [
+        'value'=>'01/12/2015',
+        'useWithAddon'=>true,
+        'pluginOptions'=>[
+        'allowClear' => true,
+        'singleDatePicker'=>true,
+        'showDropdowns'=>true
         ]
         ]);
+        echo '</div>';
+        
         ?>
+        <br>
         </div>
 
         </div>
@@ -108,16 +119,43 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
         <div class="row">
 
-
         <div class='col-md-12'>
-        <?= $form->field($model, 'fecha1')->widget(DatePicker::classname(), [
-        'options' => ['placeholder' => 'seleccione la fecha ...'],
+        <?=
+        $form->field($model, 'animales')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map($animales, 'identificacion', 'identificacion'),
+        'maintainOrder' => true,
+        'toggleAllSettings' => [
+        'selectLabel' => '<i class="glyphicon glyphicon-ok-circle" style="font-size:15px;"></i> <h style="font-size:15px;">Seleccionar todos</h>',
+        'unselectLabel' => '<i class="glyphicon glyphicon-remove-circle" style="font-size:15px;"></i> <h style="font-size:15px;">Eliminar todos</h>',
+        'selectOptions' => ['class' => 'text-success'],
+        'unselectOptions' => ['class' => 'text-danger'],
+        ],
+        'options' => ['placeholder' => 'Seleccione Animales ...', 'multiple' => true],
         'pluginOptions' => [
-        'format' => 'yyyy-mm-dd',
-        'autoclose'=>true
-        ]
+        'allowClear' => false,
+
+        ],
         ]);
         ?>
+        </div>
+
+        <div class='col-md-12'>
+        <?php
+
+        echo '<div class="input-group drp-container col-md-12">';
+        echo $form->field($model, 'fecha1')->widget(DateRangePicker::classname(), [
+        'value'=>'01/12/2015',
+        'useWithAddon'=>true,
+        'pluginOptions'=>[
+        'allowClear' => true,
+        'singleDatePicker'=>true,
+        'showDropdowns'=>true
+        ]
+        ]);
+         echo '</div>';
+        
+        ?>
+        <br>
         </div>
 
 
@@ -125,25 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'descripcion' )->textarea(['rows' => 4]) ?>
         </div>
 
-        <div class="col-md-12"><h4 align="center">Seleccione los animales a vender</h4></div>
 
-        <div class='col-md-12'>
-        <?=GridView::widget([
-        'dataProvider' => $animales,
-        'id' => 'grid',
-        'pjax'=>true,
-        'pjaxSettings'=>
-        [
-           'neverTimeout'=>true,
-        ],
-        'export'=>false,
-        'columns' => [
-        ['class' => 'yii\grid\CheckboxColumn'],
-        ['class' => 'yii\grid\SerialColumn'],
-        'identificacion',
-        ],
-        ]); ?>
-        </div>
 
         <div class="col-md-12">
         <?= Html::submitButton('Aceptar', ['class' =>'btn btn-primary','id'=>'bm2']) ?>

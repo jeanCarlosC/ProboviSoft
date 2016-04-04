@@ -130,7 +130,7 @@ class AnimalController extends Controller
     {
         
        $model = Animal::find()
-        ->select(["LPAD(identificacion, 6, '0') as identificacion_otro","imagen","sexo","GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza"," CONCAT(TIMESTAMPDIFF(MONTH,animal.fecha_nacimiento,CURDATE()), ' ','meses') as edad","nuemro_arete","LPAD(madre, 6, '0') as madre_1","LPAD(padre, 6, '0') as padre_1","fecha_nacimiento","identificacion"])
+        ->select(["LPAD(identificacion, 6, '0') as identificacion_otro","imagen","sexo","GROUP_CONCAT(CONCAT(raza_animal.porcentaje, '', '%'),' ', raza_animal.raza_id_raza ORDER BY raza_animal.porcentaje DESC SEPARATOR ' y ') as raza"," CONCAT(TIMESTAMPDIFF(MONTH,animal.fecha_nacimiento,CURDATE()), ' ','meses') as edad","nuemro_arete","LPAD(madre, 6, '0') as madre_1","LPAD(padre, 6, '0') as padre_1","fecha_nacimiento","identificacion","nombre"])
         ->join('JOIN','raza_animal','raza_animal.animal_identificacion = animal.identificacion')
         ->groupBy('animal.identificacion')
         ->where(['animal.identificacion'=>$id])

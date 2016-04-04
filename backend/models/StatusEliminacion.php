@@ -22,6 +22,7 @@ class StatusEliminacion extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $fecha1;
+    public $animales;
     public static function tableName()
     {
         return 'status_eliminacion';
@@ -33,7 +34,7 @@ class StatusEliminacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status_id_status', 'animal_identificacion', 'fecha','fecha1', 'causa', 'descripcion'], 'required'],
+            [['status_id_status', 'animal_identificacion', 'fecha','fecha1', 'causa', 'descripcion','animales'], 'required'],
             [['animal_identificacion'], 'integer'],
             [['fecha','fecha1'], 'safe'],
             [['descripcion'], 'string'], 
@@ -91,7 +92,8 @@ class StatusEliminacion extends \yii\db\ActiveRecord
             'fecha' => 'Fecha',
             'fecha1' => 'Fecha',
             'causa' => 'Causa',
-            'descripcion' => 'Descripcion', 
+            'descripcion' => 'Descripcion',
+            'animales'=>'Animales a vender', 
         ];
     }
 

@@ -59,15 +59,17 @@ use kartik\file\FileInput;
 <div class='col-md-3'><?php echo $form->field($model_peso, 'peso')->textInput() ?></div>
 </div>
 <div class='row col-md-12'>
-<div class="col-md-4">
+<div class="col-md-3">
     <?= $form->field($model, 'nuemro_arete')->textInput() ?>
 </div>
 
-<div class="col-md-4">
+<div class='col-md-3'><?php echo $form->field($model, 'nombre')->textInput() ?></div>
+
+<div class="col-md-3">
     <?= $form->field($model, 'madre')->textInput() ?>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-3">
     <?= $form->field($model, 'padre')->textInput() ?>
 </div>
 </div>

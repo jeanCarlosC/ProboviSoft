@@ -30,6 +30,7 @@ class Diagnostico extends \yii\db\ActiveRecord
  public $animal_identificacion_2;
  public $animal;
  public $toro_monta;
+ public $animales;
  
     public static function tableName()
     {
@@ -42,7 +43,7 @@ class Diagnostico extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha', 'diagnostico_prenez', 'servicio_id_servicio', 'animal_identificacion'], 'required'],
+            [['fecha', 'diagnostico_prenez', 'servicio_id_servicio', 'animal_identificacion','animales'], 'required'],
             [['fecha','parto_esperado'], 'safe'],
             [['fecha'], 'checkDate'],
             [['animal_identificacion'],'checkAnimal'],
@@ -101,6 +102,7 @@ class Diagnostico extends \yii\db\ActiveRecord
             'animal_identificacion' => 'Animal',
             'parto_esperado' => 'Fecha parto',
             'animal_identificacion_2' => 'Animal',
+            'animales'=> 'Hembras a palpar',
         ];
     }
 

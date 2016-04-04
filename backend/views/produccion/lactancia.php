@@ -13,7 +13,7 @@ use backend\models\Ordeno;
 use yii\bootstrap\Tabs;
 use yii\widgets\Pjax;
 
-$this->title = 'Animal: '.$model->identificacion_otro;
+$this->title = 'Animal: '.$model->identificacion;
 ?>
     <div class='col-md-12'>
     <br>

@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 use miloschuman\highcharts\Highcharts;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use kartik\export\ExportMenu;
 
 $this->title = 'Producción';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,26 +20,49 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
 
-               echo GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'pjax'=>true,
-                'pjaxSettings'=>
-                [
-                'neverTimeout'=>true,
-                ],
-                'export'=>false,
-                'columns' => 
+                $gridColumns = 
                 [
                     ['class' => 'yii\grid\SerialColumn'],
 
-                     'identificacion_otro',
-                     'arete',
+                    'identificacion',
+
                     [
                     'attribute' => 'raza',
                     'value' => 'raza_concatenada.raza',
                     ],
-                       [
+
+                    'PAL',
+
+                    'Lac',
+
+                    'PLL',
+
+                    'PDL',
+
+                    'PLD',
+                ];
+
+                $gridColumns2 = 
+                [
+                    ['class' => 'yii\grid\SerialColumn'],
+
+                    'identificacion',
+
+                    [
+                    'attribute' => 'raza',
+                    'value' => 'raza_concatenada.raza',
+                    ],
+
+                    'PAL',
+
+                    'Lac',
+
+                    'PLL',
+
+                    'PDL',
+
+                    'PLD',
+                    [
                             'class' => 'yii\grid\ActionColumn',
 
                             'header'=>'Ver',
@@ -49,26 +73,46 @@ $this->params['breadcrumbs'][] = $this->title;
                             'buttons' => 
                             [
 
-                                    'view' => function ($url) {
+                                    'view' => function ($url) 
+                                    {
 
-                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                                    'title' => Yii::t('app', 'Ver Producción'),
+                                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                        'title' => Yii::t('app', 'Ver Producción'),
                                     ]);
 
                                     },
                             ],
-                            'urlCreator' => function ($action, $model, $key, $index) {
+                                    'urlCreator' => function ($action, $model, $key, $index) 
+                                    {
 
-                                if ($action === 'view') 
-                                {
-                                return \Yii::$app->getUrlManager()->createUrl(['produccion/view', 'id' => $model['identificacion_otro']]);
-                                }
-                            }
+                                    if ($action === 'view') 
+                                    {
 
-                        ],
+                                        return \Yii::$app->getUrlManager()->createUrl(['produccion/view', 'id' => $model['identificacion']]);
+                                    }
 
+                                    }
+
+                            ],
+                ];
+
+                echo ExportMenu::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $gridColumns
+                ]);
+
+               echo GridView::widget([
+                'dataProvider' => $dataProvider,
+               /* 'filterModel' => $searchModel,*/
+                'pjax'=>true,
+                'responsive'=>true,
+                'hover'=>true,
+                'pjaxSettings'=>
+                [
+                'neverTimeout'=>true,
                 ],
-
+                'export'=>false,
+                'columns' => $gridColumns2,
 
                 ]); 
             ?>

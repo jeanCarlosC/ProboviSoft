@@ -48,7 +48,7 @@ AppAsset::register($this);
             'visible' => $this->context->route == 'site/index',
         ],
 
-        [
+/*        [
             'label' => 'Producción',
             'items' => [
             ['label' => 'Producción-Lactancias', 'url' => Url::toRoute('/produccion/')],
@@ -56,7 +56,27 @@ AppAsset::register($this);
             ],
 
             'visible' => ($this->context->route != "site/index" && $this->context->route != "site/login"),
+        ],*/
+        
+        [
+
+            'label' => 'Reportes',
+            'items' => [
+            '<li class="dropdown-header"><b>Producción</b></li>',
+            ['label' => 'Productivo', 'url' => Url::toRoute('/produccion/')],
+/*            ['label' => 'vacas proximas a parto', 'url' => Url::toRoute('#')],
+            ['label' => 'Vacas proximas a servicio', 'url' => Url::toRoute('#')],*/
+            '<li class="divider"></li>',
+            '<li class="dropdown-header"><b>Reproducción</b></li>',
+            ['label' => 'Reproductivo', 'url' => Url::toRoute('#')],
+            ['label' => 'vacas proximas a parto', 'url' => Url::toRoute('#')],
+            ['label' => 'Vacas proximas a servicio', 'url' => Url::toRoute('#')],
+
+            ],
+            'visible' => $this->context->route != "site/login",
         ],
+        
+
         [
             'label' => 'Modulos',
             'items' => [

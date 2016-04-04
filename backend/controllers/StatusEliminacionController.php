@@ -79,19 +79,13 @@ class StatusEliminacionController extends Controller
         $command = $query2->createCommand();
         $data_animales = $command->queryAll();
 
-            $animalesT = new ArrayDataProvider([
-            'key'=>'identificacion',
-            'allModels' => (empty($animales)) ? array() : $animales,  
-            'pagination' => [
-            'pageSize' => 5,
-            ],
-            ]);
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'model'=> $model,
-            'animales'=>$animalesT,
+            'animales'=>empty($animales) ? array() : $animales,
             'data'=> $data_animales,
             
         ]);
@@ -286,7 +280,7 @@ class StatusEliminacionController extends Controller
         if (Yii::$app->request->post()) 
         {
             $model_principal->attributes = $_POST['StatusEliminacion'];
-            $keys = yii::$app->request->post('selection');
+            $keys = $_POST['StatusEliminacion']['animales'];
             
             foreach ($keys as $i => $value) {
             $model[$i] = new StatusEliminacion();

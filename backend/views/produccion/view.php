@@ -13,7 +13,7 @@ use backend\models\Parto;
 use yii\bootstrap\Tabs;
 use yii\widgets\Pjax;
 
-$this->title = 'Animal: '.$model->identificacion_otro;
+$this->title = 'Animal: '.$model->identificacion;
 ?>
 <div class="produccion-index">
 <?= Html::a('<i class="glyphicon glyphicon-chevron-left"></i> Atras', ['index'], ['class' => 'btn btn-link']) ?>
@@ -59,11 +59,11 @@ $this->title = 'Animal: '.$model->identificacion_otro;
 <?php
 
 
-$partos = Parto::find()->where(['animal_identificacion'=>$model->identificacion_otro])->orderBy(['id_parto'=>SORT_ASC])->all();
-$conteo = Parto::find()->where(['animal_identificacion'=>$model->identificacion_otro])->orderBy(['id_parto'=>SORT_ASC])->count();
+$partos = Parto::find()->where(['animal_identificacion'=>$model->identificacion])->orderBy(['id_parto'=>SORT_ASC])->all();
+$conteo = Parto::find()->where(['animal_identificacion'=>$model->identificacion])->orderBy(['id_parto'=>SORT_ASC])->count();
 
     foreach ($partos as $key2 => $value2) {
-    $query2 = Ordeno::find()->where(['animal_identificacion'=>$model->identificacion_otro])
+    $query2 = Ordeno::find()->where(['animal_identificacion'=>$model->identificacion])
     ->where(['parto_id_parto'=>$value2['id_parto']])->all();
     $query = Secado::find()->select(["secado.fecha Fin_Lactancia"])
     ->where(['parto_id_parto'=>$value2["id_parto"]])->one();
@@ -105,7 +105,7 @@ $conteo = Parto::find()->where(['animal_identificacion'=>$model->identificacion_
     $dias[]=$anterior;
     }
 
-    $serie[$key2] = array('color'=>$color[$key2],'name'=>$model->identificacion_otro,'data'=>$pesajes);
+    $serie[$key2] = array('color'=>$color[$key2],'name'=>$model->identificacion,'data'=>$pesajes);
     if($key2==0){
 
     $tabs[$key2]= array('label'=>'Lactancia '.($key2+1),'content'=> $this->render('lactancia', [
